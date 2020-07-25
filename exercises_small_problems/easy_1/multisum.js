@@ -29,14 +29,18 @@ ALGO:
     
     # takes a number > 1 as argument
     
-    SET number = input 
     SET counter = 1
-    SET sumList = 0
+    SET sum = 0
     
     WHILE counter <= number
     	counter = counter + 1
         IF counter divisible by 3 OR 5
-            sumList = sumList + counter
+            sum = sum + counter
+            counter + 1
+        ELSE
+          counter + 1
+        
+        RETRUN sum
         
     PRINT counter
     */
