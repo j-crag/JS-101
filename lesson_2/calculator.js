@@ -15,26 +15,37 @@ function invalidNumber(number) {
   return number.trimStart() === '' || Number.isNaN(Number(number));
 }
 
-prompt(MESSAGES['welcome']);
+function messages(message, lang = 'en') {
+  return MESSAGES[lang][message];
+}
+
+function finalResult(message, lang = 'en') {
+  return MESSAGES[lang][message] + `${output}`;
+}
+
+prompt('Would you prefer Englsih or Scottish Gaelic as your language? (en/sg)');
+let language = readline.question();
+
+prompt(messages('welcome', language));
 
 while (true) {
-  prompt(MESSAGES['first']);
+  prompt(messages('first', language));
   let number1 = readline.question();
 
   while (invalidNumber(number1)) {
-    prompt(MESSAGES['invalid']);
+    prompt(messages('invalid', language));
     number1 = readline.question();
   }
 
-  prompt(MESSAGES['second']);
+  prompt(messages('second', language));
   let number2 = readline.question();
 
   while (invalidNumber(number2)) {
-    prompt(MESSAGES['invalid']);
+    prompt(messages('invalid', language));
     number2 = readline.question();
   }
 
-  prompt(MESSAGES['operation']);
+  prompt(messages('operation', language));
   let operation = readline.question();
 
   let output;
@@ -54,14 +65,20 @@ while (true) {
   }
 
   while (!['1', '2', '3', '4'].includes(operation)) {
-    prompt('Please choose an operation!');
+    prompt(messages('invalid2', language));
     operation = readline.question();
   }
 
-  prompt(`The result is: ${output}`);
+  switch (language) {
+    case 'en':
+      prompt(`The result is: ${output}.`);
+      break;
+    case 'sg':
+      prompt(`Is e an toradh: ${output}.`);
+  }
 
-  prompt('Would you like to perform another calculation? (y/n');
-  let answer = readline.question().toUpperCase();
+  prompt(messages('repeat', language));
+  let answer = Number(readline.question());
 
-  if (answer !== 'Y') break;
+  if (answer !== 1) break;
 }
