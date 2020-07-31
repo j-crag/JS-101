@@ -1,0 +1,4 @@
+{
+  "invalid": "Please re-enter your total loan amount, you may have entered an invalid character.",
+  "APR": "Please enter the Annual Percentage Rate (APR) of your loan as a decimal value: "
+}
