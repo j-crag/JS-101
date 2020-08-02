@@ -1,4 +1,4 @@
-const READLINE = require('readline-sync');
+READLINE = require('readline-sync');
 const MESSAGES = require('./loan_calc.json');
 
 function message(message) {
@@ -6,7 +6,7 @@ function message(message) {
 }
 
 // function used to reformat userinput
-function reformatTotalAmount(string) {
+function reformatAmount(string) {
   let dollarsOnly = string.split('.')[0];
   let centAmount = string.split('.')[1];
 
@@ -26,48 +26,62 @@ function reformatTotalAmount(string) {
   }
 
   dollarsOnly = digitsOnly.join('');
-  let totalAmount = [dollarsOnly, centAmount].join('.');
-  return Number(totalAmount).toFixed(2);
+  let totalAmount = Number([dollarsOnly, centAmount].join('.'));
+  return Number(totalAmount.toFixed(2));
 }
 
-message('Welome to the loan calculator!');
-
-message('Please enter the total dollar amount of your loan: ');
-let userAmountInput = READLINE.prompt();
-
-while (
-  reformatTotalAmount(userAmountInput) === 'NaN' ||
-  reformatTotalAmount(userAmountInput) === 'undefined'
-) {
-  message(MESSAGES.invalid);
-  userAmountInput = READLINE.prompt();
+function invalidAmount(input) {
+  return Number(input) < 0 || Number.isNaN(Number(input));
 }
 
-let totalAmount;
-
-if (
-  userAmountInput.includes(' ') ||
-  userAmountInput.includes('.') ||
-  userAmountInput.includes('$') ||
-  userAmountInput.includes(',')
-) {
-  totalAmount = reformatTotalAmount(userAmountInput);
-} else {
-  totalAmount = Number(userAmountInput).toFixed(2);
+function isInvalidNumber(number) {
+  return number.trim() === "" || Number(number) < 0 || Number.isNaN(Number(number));
 }
 
-message(MESSAGES.APR);
-let LoanApr = READLINE.prompt();
+function retrieveLoanAmount(input) {
+  message(MESSAGES["loanAmount"]);
+  let loanAmount = reformatAmount(READLINE.prompt());
+  while (invalidAmount(loanAmount)) {
+    message(MESSAGES["invalidLoanAmount"]);
+    loanAmount = reformatAmount(READLINE.prompt());
+  }
+  return loanAmount;
+}
 
-message('Please enter the loans duration in terms of months: ');
-let loanDuration = READLINE.prompt();
+function retrieveApr(input) {
+  message(MESSAGES["APR"]);
+  let loanApr = READLINE.prompt();
+  while (isInvalidNumber(loanApr)) {
+    message(MESSAGES["invalidApr"]);
+    loanApr = READLINE.prompt();
+  }
+  return Number(loanApr) / 100;
+}
 
-let monthlyApr = LoanApr / 12;
+function retrieveDuration(input) {
+  message(MESSAGES["loanDuration"]);
+  let loanDuration = READLINE.prompt();
+  while (invalidAmount(loanDuration) || loanDuration.includes('.')) {
+    message(MESSAGES["invalidDuration"]);
+    loanDuration = READLINE.prompt();
+  }
+  return Number(loanDuration);
+}
 
-let monthlyPayments = Number(
-  totalAmount * (monthlyApr / (1 - Math.pow(1 + monthlyApr, -loanDuration)))
-).toFixed(2);
+function calculateMonthlyPayment() {
+  let monthlyApr = loanApr / 12;
+  let monthlyPayments = Number(
+    totalLoanAmount * (monthlyApr / (1 - Math.pow(1 + monthlyApr, -loanDuration)))
+  ).toFixed(2);
+  message(
+    `Your monthly payment on this loan will be\n=====> $${monthlyPayments}.`
+  );
+}
 
-message(
-  `Your monthly payment on this loan will be\n=====> $${monthlyPayments}.`
-);
+message(MESSAGES["welcome"]);
+
+let totalLoanAmount = retrieveLoanAmount();
+let loanApr = retrieveApr();
+let loanDuration = retrieveDuration();
+
+calculateMonthlyPayment();

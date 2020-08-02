@@ -1,4 +1,9 @@
 {
-  "invalid": "Please re-enter your total loan amount, you may have entered an invalid character.",
-  "APR": "Please enter the Annual Percentage Rate (APR) of your loan as a decimal value: "
+  "invalidLoanAmount": "Please re-enter your total loan amount, you may have entered an invalid character.",
+  "APR": "Please enter the Annual Percentage Rate (APR) of your loan as a number:  ",
+  "invalidApr": "Please re-enter the APR, you may have entered an invalid character",
+  "welcome": "Welcome to the loan calculator!",
+  "loanAmount": "Please enter the total dollar amount of your loan as an integer ",
+  "loanDuration": "Please enter the loans duration in terms of months: ",
+  "invalidDuration": "Please re-enter the loan duration as an integer."
 }
