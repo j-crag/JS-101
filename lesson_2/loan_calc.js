@@ -35,7 +35,7 @@ function invalidAmount(input) {
 }
 
 function isInvalidNumber(number) {
-  return number.trim() === "" || Number(number) < 0 || Number.isNaN(Number(number));
+  return number.trim() === "" || Number(number) <= 0 || Number.isNaN(Number(number));
 }
 
 function retrieveLoanAmount(input) {
@@ -61,7 +61,7 @@ function retrieveApr(input) {
 function retrieveDuration(input) {
   message(MESSAGES["loanDuration"]);
   let loanDuration = READLINE.prompt();
-  while (invalidAmount(loanDuration) || loanDuration.includes('.')) {
+  while (isInvalidNumber(loanDuration) || loanDuration.includes('.')) {
     message(MESSAGES["invalidDuration"]);
     loanDuration = READLINE.prompt();
   }
