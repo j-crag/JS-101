@@ -31,8 +31,6 @@ console.log(integerToString(123)); // => '123'
 console.log(integerToString(1)); // => '1'
 
 function signedIntegerToString(number) {
-  let negativeResult = '-';
-  let positiveResult = '+';
   switch (Math.sign(number)) {
     case -1:
       return `-${integerToString(-number)}`;
